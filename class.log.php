@@ -12,16 +12,46 @@
 		public $entry = '';
 		public $timestamp = '';
 		
-		public function __construct(){
-			date_default_timezone_set('America/New_York');
+		/**	
+		 * __construct function
+		 * --------------------
+		 * Initialize the class and set the time zone for proper
+		 * timestamps.
+		 * 
+		 * @param String $timezone 
+		 */
+		
+		public function __construct($timezone = 'America/New_York')
+		{
+			date_default_timezone_set($timezone);
 			$this->timestamp = date('d/m/y - G:i:s', time()) . ': ';
 		}
 		
-		public function line($content){
-			$this->entry .= $content . ' ';
+		/**	
+		 * line function
+		 * -------------
+		 * Build a sentence by using line(). Every content argument 
+		 * gets stitched together and stored till add() is called.
+		 * 
+		 * @param String $content 
+		 * @param String $space
+		 */
+		
+		public function line($content, $space = true)
+		{
+			$this->entry .= $content;
+			$this->entry .= ($space !== true) ? $space : ' ';
 		}
 		
-		public function add(){
+		/**	
+		 * add function
+		 * -------------
+		 * Adds the $entry to the log file. Should be used after
+		 * line() for submitting.
+		 */
+		
+		public function add()
+		{
 			$this->entry = $this->timestamp . $this->entry . "\n";
 			$fp = @fopen($this->log,'a') or die("can't open log");
 			$response = fwrite($fp, $this->entry);
@@ -31,7 +61,17 @@
 			$this->entry = '';
 		}
 		
-		public function singleLine($content){
+		/**	
+		 * singleLine function
+		 * -------------
+		 * Adds a single line of content to the log file straight
+		 * away, automatically calling add()
+		 * 
+		 * @param String $content 
+		 */
+		
+		public function singleLine($content)
+		{
 			$this->entry = $content;
 			$this->add();
 			
@@ -40,18 +80,4 @@
 			
 	}
 	
-	/* --------------------------------
-	 * Copyright (c) 2013 Joey van Ommen
-	 *
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to
-	 * deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-	 * sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-	 *
-	 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 * --------------------------------
-	 */
 ?>
