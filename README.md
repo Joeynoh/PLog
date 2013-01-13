@@ -3,8 +3,18 @@ PHP-Log-Class
 
 A simple PHP class to log data in a .log file. Great for logging custom scripts.
 
-License
-=======
+### About
+-------
+This PHP class was written as a light weight, easy-to-use way to log activity to a .log file. It's designed to instantly work within any PHP project, multiple log files and complete freedom in the format of the log entries. 
+
+A working demo can be found here: http://joeyvo.me/PHP-Log-Class
+
+### Usage
+-------
+Coming soon.
+
+#### License
+-------
 
 Copyright (c) 2013 Joey van Ommen
 
