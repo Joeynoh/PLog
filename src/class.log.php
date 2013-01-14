@@ -8,13 +8,7 @@
 
 	class Log {
 		
-		private $logs = array(
-			'default' => 'example.log'
-			
-			// Add more log files here
-			
-		);
-		
+		private $logs;
 		public $entry;
 		public $log_status;
 		
@@ -33,41 +27,67 @@
 		 * @param String $timezone 
 		 */
 		
-		public function __construct($timezone = 0)
+		public function __construct($logfiles = 'temp.log', $timezone = 0)
 		{
+			if(is_array($logfiles)){
+				$this->logs = $logfiles;
+			}else if(is_string($logfiles)){
+				$this->logs = array('default' => $logfiles);
+			}else{
+				return false;
+			}
+			
 			$timezone = (is_string($timezone)) ? $timezone : date_default_timezone_get();
 			date_default_timezone_set($timezone);
 			
-			$this->log_status = self::LOG_ACTIVE;
+			$this->activateLog();
 		}
 		
 		/**	
-		 * line function
+		 * __destruct function
+		 * --------------------
+		 * Deactivate the log
+		 */
+		
+		public function __destruct()
+		{
+			$this->deactivateLog();
+		}
+		
+		/**	
+		 * entry function
 		 * -------------
-		 * Build a sentence by using line(). Every content argument 
-		 * gets stitched together and stored till add() is called.
+		 * Adds a single line of content to the log file
 		 * 
 		 * @param String $content 
-		 * @param String $space
 		 */
 		
-		public function line($content, $space = true)
+		public function entry($entry, $meta = array(), $timestamp = true, $log = 'default')
 		{
-			$this->entry .= $content;
-			$this->entry .= ($space === true) ? ' ' : '';
-		}
-		
-		/**	
-		 * add function
-		 * -------------
-		 * Adds the $entry to the log file. Should be used after
-		 * line() for submitting.
-		 */
-		
-		public function add($log = 'default')
-		{
-			if($this->log_status){
-				$this->entry = '[' . date(self::TIMESTAMP_FORMAT, time()) . ']: ' . $this->entry . "\n";
+			if(is_bool($meta)){ // Treat as timestamp var
+				$timestamp = $meta;
+			}
+			
+			// Clear last entry;
+			$this->entry = '';
+			
+			// Add timestamp
+			if($timestamp){
+				$this->entry = '[' . date(self::TIMESTAMP_FORMAT, time()) . ']: ';
+			}
+			
+			// Add meta data, if available
+			if(is_array($meta) && count($meta)){
+				foreach($meta as $m){
+					$this->entry .= '[' . $m . ']';
+				}
+				$this->entry .= ' - ';
+			}
+			
+			// Add content and linebreak
+			$this->entry .= $entry . "\n";
+			
+			if($this->log_status && is_string($log)){
 				
 				$fp = @fopen($this->logs[$log],'a') or die('Can\'t open log file: ' . $log);
 				
@@ -78,38 +98,7 @@
 				}
 				
 				fclose($fp);
-				
-				$this->entry = '';
 			}
-		}
-		
-		/**	
-		 * entry function
-		 * -------------
-		 * Adds a single line of content to the log file straight
-		 * away, automatically calling add()
-		 * 
-		 * @param String $content 
-		 */
-		
-		public function entry($entry, $id = '', $label = '', $log = 'default')
-		{
-			$this->entry = '';
-			
-			if($id != '' || $label != ''){
-				if($id != ''){
-					$this->entry .= '[' . $id . ']';
-				}
-				if($label != ''){
-					$this->entry .= '[' . $label . ']';
-				}
-				$this->entry .= ' - ';
-			}
-			
-			$this->entry .= $entry;
-			$this->add($log);
-			
-			$this->entry = '';
 		}
 		
 		/**	
@@ -121,6 +110,17 @@
 		public function clearLog($log = 'default')
 		{
 			$fp = fopen($this->logs[$log],'w') or die("can't open log");
+		}
+		
+		/**	
+		 * lastEntry function
+		 * -------------
+		 * Clears the log entirely
+		 */
+		
+		public function lastEntry()
+		{
+			return $this->entry;
 		}
 		
 		/**	
