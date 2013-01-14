@@ -7,11 +7,32 @@ A simple PHP class to log data in a .log file. Great for logging custom scripts.
 -------
 This PHP class was written as a light weight, easy-to-use way to log activity to a .log file. It's designed to instantly work within any PHP project, multiple log files and complete freedom in the format of the log entries. 
 
-A working demo can be found here: http://joeyvo.me/PHP-Log-Class
+A working demo can be found here: http://joeyvo.me/PHP-log-class/
 
 ### Usage
 -------
-Coming soon.
+Create a log instance for one .log file, or multiple:
+
+    $log = new Log('example.log');
+  
+    // OR
+          
+    $multi_logs = new Log(array(
+       'default' => 'example.log', 
+       'other' => 'other.log'
+    ));
+  
+Add entries to a .log file:
+
+    $log->entry('Basic entry, with timestamp');
+            
+    $log->entry('Entry with meta', array('Meta', 'data', 'here'));   
+    
+    $log->entry('Entry without timestamp', false);
+    
+Clear the .log file completely (use with caution).
+
+    $log->clearLog();
 
 #### License
 -------
