@@ -55,7 +55,7 @@
 <?php
 	
 	include('src/class.log.php');
-	$log = new Log('example.log');
+	$log = new Log(array('default' =>'example.log', 'secondary' => 'example_two.log'));
 	$log->clear();
 	
 	$log->entry('** example.log file used for demonstration **', false);
@@ -63,13 +63,13 @@
 	$log->entry('Entry with meta data', array('Your IP', $_SERVER['REMOTE_ADDR']));
 	$log->entry('Entry with meta, without timestamp', array('5678', 'Label'), false);
 	
-	$log->__destruct();
+	$log->switchTo('secondary');
+	$log->clear();	
 	
-	$new_log = new Log(array('default' =>'example.log', 'secondary' => 'example_two.log'));
+	// Check out: 
 	
-	$new_log->entry(' ', false);
-	$new_log->entry('** New log instance, using array **', false);
-	$new_log->entry('New entry');
+	$log->entry('** Switched to another log file **', false);
+	$log->entry('New entry');
 	
 ?>
 
