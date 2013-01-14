@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Untitled Document</title>
+<title>PHP Log Class - Joey van Ommen - Joeyvo.me</title>
 
 <link rel="stylesheet" media="screen" href="http://joeyvo.me/css/1140.css" />
 <link rel="stylesheet" media="screen" href="http://joeyvo.me/stylesheet.css" />
@@ -56,7 +56,7 @@
 	
 	include('src/class.log.php');
 	$log = new Log('example.log');
-	$log->clearLog();
+	$log->clear();
 	
 	$log->entry('** example.log file used for demonstration **', false);
 	$log->entry('Basic usage');
@@ -79,7 +79,7 @@
 	<div class="container">
   	<div class="row">
       <header class="twelvecol last">
-      	<h1>PHP Log Class</h1>
+      	<h1>PHP Log Class <?php echo $log->error; ?></h1>
       </header>
     </div>
     

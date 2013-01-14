@@ -9,14 +9,18 @@
 	class Log {
 		
 		private $logs;
+		private $log;
+		
+		public $active;
 		public $entry;
-		public $log_status;
+		public $error;
+		public $status;
 		
 		const LOG_INACTIVE = 0;
 		const LOG_ACTIVE = 1;
 		const LOG_FAILED = 2;
 		
-		const TIMESTAMP_FORMAT = 'd/m/y - G:i:s';
+		const TIMESTAMP_FORMAT = 'Y-m-d H:i:s';
 		
 		/**	
 		 * __construct function
@@ -37,6 +41,15 @@
 				return false;
 			}
 			
+			$this->log = fopen($this->logs['default'],'a');
+			
+			if(!flock($this->log, LOCK_UN)){
+				$this->error = 'Couldn\'t get lock.';
+				return false;
+			}else{
+				$this->error = 'Locked';
+			}
+			
 			$timezone = (is_string($timezone)) ? $timezone : date_default_timezone_get();
 			date_default_timezone_set($timezone);
 			
@@ -51,6 +64,7 @@
 		
 		public function __destruct()
 		{
+			fclose($this->log);
 			$this->deactivateLog();
 		}
 		
@@ -87,17 +101,14 @@
 			// Add content and linebreak
 			$this->entry .= $entry . "\n";
 			
-			if($this->log_status && is_string($log)){
-				
-				$fp = @fopen($this->logs[$log],'a') or die('Can\'t open log file: ' . $log);
-				
-				if($fp){
-					fwrite($fp, $this->entry);
+			if($this->status && is_string($log)){
+							
+				if($this->log){
+					fwrite($this->log, $this->entry);
 				}else{
-					$this->log_status = self::LOG_FAILED;
+					$this->status = self::LOG_FAILED;
+					$this->error = 'Writing to the log file, ' . $active . ', failed.';
 				}
-				
-				fclose($fp);
 			}
 		}
 		
@@ -107,9 +118,9 @@
 		 * Clears the log entirely
 		 */
 		
-		public function clearLog($log = 'default')
+		public function clear($log = 'default')
 		{
-			$fp = fopen($this->logs[$log],'w') or die("can't open log");
+			ftruncate($this->log, 0);
 		}
 		
 		/**	
@@ -131,7 +142,7 @@
 		
 		public function deactivateLog()
 		{
-			$this->log_status = self::LOG_INACTIVE;
+			$this->status = self::LOG_INACTIVE;
 		}
 		
 		/**	
@@ -142,7 +153,7 @@
 		
 		public function activateLog()
 		{
-			$this->log_status = self::LOG_ACTIVE;
+			$this->status = self::LOG_ACTIVE;
 		}
 			
 	}
