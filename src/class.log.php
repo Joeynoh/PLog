@@ -46,8 +46,6 @@
 			if(!flock($this->log, LOCK_UN)){
 				$this->error = 'Couldn\'t get lock.';
 				return false;
-			}else{
-				$this->error = 'Locked';
 			}
 			
 			$timezone = (is_string($timezone)) ? $timezone : date_default_timezone_get();
@@ -64,6 +62,7 @@
 		
 		public function __destruct()
 		{
+			fflush($this->log);
 			fclose($this->log);
 			$this->deactivateLog();
 		}
@@ -76,7 +75,7 @@
 		 * @param String $content 
 		 */
 		
-		public function entry($entry, $meta = array(), $timestamp = true, $log = 'default')
+		public function entry($entry, $meta = array(), $timestamp = true)
 		{
 			if(is_bool($meta)){ // Treat as timestamp var
 				$timestamp = $meta;
@@ -101,7 +100,7 @@
 			// Add content and linebreak
 			$this->entry .= $entry . "\n";
 			
-			if($this->status && is_string($log)){
+			if($this->status){
 							
 				if($this->log){
 					fwrite($this->log, $this->entry);
@@ -113,14 +112,35 @@
 		}
 		
 		/**	
-		 * clearLog function
+		 * clear function
 		 * -------------
 		 * Clears the log entirely
 		 */
 		
-		public function clear($log = 'default')
+		public function clear()
 		{
 			ftruncate($this->log, 0);
+		}
+		
+		/**	
+		 * switchTo function
+		 * -------------
+		 * Switches to a differnt log file
+		 */
+		
+		public function switchTo($log)
+		{
+			fflush($this->log);
+			fclose($this->log);
+			
+			if(is_string($log)){
+				$this->log = fopen($this->logs[$log],'a');
+				
+				if(!flock($this->log, LOCK_UN)){
+					$this->error = 'Couldn\'t get lock.';
+					return false;
+				}
+			}
 		}
 		
 		/**	
