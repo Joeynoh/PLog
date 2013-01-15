@@ -98,6 +98,10 @@
       	<h3>About</h3>
       	<p>This PHP class was written as a light weight, easy-to-use way to log activity to a .log file. It's designed to instantly work within any PHP project, multiple log files and complete freedom with the format of the log entries.</p>
         
+        <p>All 8 logging levels defined in
+<a href="http://tools.ietf.org/html/rfc5424">RFC 5424</a> are supported (DEBUG, INFO, NOTICE, WARNING,
+ERROR, CRITICAL, ALERT, EMERGENCY) and this class implements the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md">PSR-3 interface</a>.</p>
+        
         <p>Upon refreshing this page, the example log file in the above iframe is cleared and updated with new entries.</p>
         
         <h3>License</h3>
@@ -122,14 +126,14 @@ $multi_logs = new Log(array(
 ));</code></pre>
 
         <p>Add entries to a .log file:</p>
-        <pre><code>$log->entry('Basic entry, with timestamp');
+        <pre><code>$log->warning('Basic entry, with timestamp');
         
-$log->entry('Entry with meta', array('Meta', 'data', 'here'));   
+$log->warning('Entry with context', array('Meta', 'data', 'here'));   
 
-$log->entry('Entry without timestamp', false);</code></pre>
+$log->log($log::DEBUG, 'Entry with custom level');</code></pre>
         
         <p>Clear the .log file completely (use with caution).</p>
-        <pre><code>$log->clearLog();</code></pre>
+        <pre><code>$log->clear();</code></pre>
       </section>
     </div>
     

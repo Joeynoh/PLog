@@ -7,6 +7,10 @@ A simple PHP class to log data in a .log file. Great for logging custom scripts.
 -------
 This PHP class was written as a light weight, easy-to-use way to log activity to a .log file. It's designed to instantly work within any PHP project, multiple log files and complete freedom in the format of the log entries. 
 
+All 8 logging levels defined in
+[RFC 5424](http://tools.ietf.org/html/rfc5424) are supported (DEBUG, INFO, NOTICE, WARNING,
+ERROR, CRITICAL, ALERT, EMERGENCY) and this class implements the [PSR-3 interface](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md).
+
 A working demo can be found here: http://joeyvo.me/PHP-log-class/
 
 ### Usage
@@ -24,15 +28,15 @@ Create a log instance for one .log file, or multiple:
   
 Add entries to a .log file:
 
-    $log->entry('Basic entry, with timestamp');
-            
-    $log->entry('Entry with meta', array('Meta', 'data', 'here'));   
-    
-    $log->entry('Entry without timestamp', false);
+    $log->warning('Basic entry, with timestamp');
+        
+		$log->warning('Entry with context', array('Meta', 'data', 'here'));   
+
+		$log->log($log::DEBUG, 'Entry with custom level');
     
 Clear the .log file completely (use with caution).
 
-    $log->clearLog();
+    $log->clear();
 
 #### License
 -------
