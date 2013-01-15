@@ -58,18 +58,21 @@
 	$log = new Log(array('default' =>'example.log', 'secondary' => 'example_two.log'));
 	$log->clear();
 	
-	$log->entry('** example.log file used for demonstration **', false);
-	$log->entry('Basic usage');
-	$log->entry('Entry with meta data', array('Your IP', $_SERVER['REMOTE_ADDR']));
-	$log->entry('Entry with meta, without timestamp', array('5678', 'Label'), false);
+	$log->entry($log::SPACER, '** example.log file used for demonstration **', false);
+	$log->debug($log);
+	
+	$log->log($log::DEBUG, 'Basic usage introduction');
+	$log->debug('Debug with context data', array('Your IP', $_SERVER['REMOTE_ADDR']));
+	$log->notice('Notice with context, without timestamp', array('Context'), false);
+	$log->warning('Warning without context');
 	
 	$log->switchTo('secondary');
 	$log->clear();	
 	
 	// Check out: 
 	
-	$log->entry('** Switched to another log file **', false);
-	$log->entry('New entry');
+	$log->entry($log::SPACER, '** Switched to another log file **', false);
+	$log->alert('Alert, we switched to another log file!');
 	
 ?>
 
