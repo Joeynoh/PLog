@@ -1,0 +1,32 @@
+{
+    "name": "PHP-Log-Class/PHP-Log-Class",
+    "description": "A simple, compliant PHP Logging class",
+    "keywords": [
+        "logging",
+        "logger",
+        "log"
+    ],
+    "homepage": "http://joeyvo.me/PHP-log-class/",
+    "license": "MIT/GPL",
+    "authors": [
+        {
+            "name": "Joey van Ommen",
+            "email": "joeygfx@gmail.com",
+            "homepage": "http://joeyvo.me",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/Joeynoh/PHP-Log-Class/issues",
+        "source": "https://github.com/Joeynoh/PHP-Log-Class/"
+    },
+    "autoload": {
+        "psr-3": { "PHP-Log-Class": "" }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/Joeynoh/PHP-Log-Class"
+        }
+    ]
+}
