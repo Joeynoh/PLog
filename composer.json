@@ -7,7 +7,7 @@
         "log"
     ],
     "homepage": "http://joeyvo.me/PHP-log-class/",
-    "license": "MIT/GPL",
+    "license": ["MIT", "GPL-3.0"],
     "authors": [
         {
             "name": "Joey van Ommen",
