@@ -53,8 +53,9 @@
 </head>
 
 <?php
-	
-	include('src/class.log.php');
+
+    include('vendor/autoload.php');
+    include('src/class.log.php');
 	$log = new Log(array('default' =>'example.log', 'secondary' => 'example_two.log'));
 	$log->clear();
 	
