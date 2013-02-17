@@ -22,11 +22,5 @@
     },
     "autoload": {
         "psr-3": { "PHP-Log-Class": "" }
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/Joeynoh/PHP-Log-Class"
-        }
-    ]
+    }
 }
