@@ -13,6 +13,8 @@ ERROR, CRITICAL, ALERT, EMERGENCY) and this class implements the [PSR-3 interfac
 
 A working demo can be found here: http://joeyvo.me/PHP-log-class/
 
+Follow news and developments on twitter: [@Joeynoh](https://twitter.com/Joeynoh)
+
 ### Usage
 -------
 Create a log instance for one .log file, or multiple:
